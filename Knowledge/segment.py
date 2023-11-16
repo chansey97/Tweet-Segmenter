@@ -77,24 +77,48 @@ def fine_segment(partitions):
 
 
 def split_text(text):
+    """
+    1. Calculate the max uniform distribution length
+    2. Splits the given text into segments where each segment is potentially less than or equal to SEGMENT_VALID_LENGTH.
+    It ensures that words are not broken in the middle by moving the cursor forward to the end of the word.
+    """
+    potential_max_length = SEGMENT_VALID_LENGTH
+    potential_max_unidist_length = len(text) // (len(text) // potential_max_length + 1) + 1
 
-    max_length = SEGMENT_VALID_LENGTH
-
-    words = text.split()
     segments = []
     current_segment = ""
+    counter = 0
+    cursor = 0
 
-    for word in words:
-        if len(current_segment) + len(word) + 1 > max_length:
-            segments.append(current_segment)
-            current_segment = word
+    while cursor < len(text):
+
+        # Check if the current segment exceeds the max length
+        if counter + 1 > potential_max_unidist_length:
+
+            # If it's in the middle of a word, eat the whole word
+            while not text[cursor].isspace() and cursor < len(text):
+                current_segment += text[cursor]
+                counter += 1
+                cursor += 1
+
+            # Eat rest spaces
+            while text[cursor].isspace() and cursor < len(text):
+                current_segment += text[cursor]
+                counter += 1
+                cursor += 1
+
+            # Add the segment and reset
+            segments.append(current_segment.rstrip())
+            current_segment = ""
+            counter = 0
         else:
-            if current_segment:
-                current_segment += " "
-            current_segment += word
+            current_segment += text[cursor]
+            counter += 1
+            cursor += 1
 
+    # Add the last segment if there is any
     if current_segment:
-        segments.append(current_segment)
+        segments.append(current_segment.rstrip())
 
     return segments
 
