@@ -17,7 +17,8 @@ SEGMENT_LENGTH = TWEER_MAX_LENGTH
 SEGMENT_NUM_LENGTH = 8
 SEGMENT_VALID_LENGTH = SEGMENT_LENGTH - SEGMENT_NUM_LENGTH
 
-ROUGH_SENGMENT_THRESHOLD = 100
+## Note: ROUGH_SENGMENT_THRESHOLD must be < (0.5 * SEGMENT_VALID_LENGTH) - MAX_WORD_SIZE
+ROUGH_SENGMENT_THRESHOLD = 120
 
 def segment(user_post):
     return suffix_num(fine_segment(rough_segment(user_post)))
@@ -26,34 +27,30 @@ def rough_segment(text):
 
     sentences = re.findall(r'[^.!?]*[.!?:]\s+', text)
 
-    partition_potential_limit = SEGMENT_VALID_LENGTH
+    potential_max_length = SEGMENT_VALID_LENGTH
     threshold_for_new_partition = ROUGH_SENGMENT_THRESHOLD
 
     partitions = []
     current_partition = ""
-    current_partition_remain = partition_potential_limit
 
     for sentence in sentences:
-        new_remain = current_partition_remain - len(sentence)
-        if new_remain < 0:
+
+        if len(current_partition) + len(sentence) > potential_max_length:
+
             stripped_sentence = sentence.rstrip()
-            new_remain = current_partition_remain - len(stripped_sentence)
-            if new_remain < 0:
-                if current_partition_remain <= threshold_for_new_partition:
+            if len(current_partition) + len(stripped_sentence) > potential_max_length:
+
+                if len(current_partition) > threshold_for_new_partition:
                     partitions.append(current_partition)
                     current_partition = sentence
-                    current_partition_remain = partition_potential_limit - len(sentence)
                 else:
-                    current_partition +=stripped_sentence
+                    current_partition += stripped_sentence
                     partitions.append(current_partition)
                     current_partition = ""
-                    current_partition_remain = partition_potential_limit
             else:
                 current_partition += stripped_sentence
-                current_partition_remain = new_remain
         else:
             current_partition += sentence
-            current_partition_remain = new_remain
 
     if current_partition:
         partitions.append(current_partition)
