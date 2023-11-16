@@ -87,33 +87,28 @@ def split_text(text):
 
     segments = []
     current_segment = ""
-    counter = 0
     cursor = 0
 
     while cursor < len(text):
 
         # Check if the current segment exceeds the max length
-        if counter + 1 > potential_max_unidist_length:
+        if len(current_segment) + 1 > potential_max_unidist_length:
 
             # If it's in the middle of a word, eat the whole word
             while not text[cursor].isspace() and cursor < len(text):
                 current_segment += text[cursor]
-                counter += 1
                 cursor += 1
 
             # Eat rest spaces
             while text[cursor].isspace() and cursor < len(text):
                 current_segment += text[cursor]
-                counter += 1
                 cursor += 1
 
             # Add the segment and reset
             segments.append(current_segment.rstrip())
             current_segment = ""
-            counter = 0
         else:
             current_segment += text[cursor]
-            counter += 1
             cursor += 1
 
     # Add the last segment if there is any
