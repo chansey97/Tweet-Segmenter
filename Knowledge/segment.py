@@ -25,7 +25,7 @@ def segment(user_post):
 
 def rough_segment(text):
 
-    sentences = re.findall(r'[^.!?]*[.!?:]\s+', text)
+    sentences = re.findall(r'[^.!?]*[.!?:]\s+', text.lstrip())
 
     potential_max_length = SEGMENT_VALID_LENGTH
     threshold_for_new_partition = ROUGH_SENGMENT_THRESHOLD
