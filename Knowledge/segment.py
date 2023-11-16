@@ -5,8 +5,8 @@ Email: chansey97@gmail.com
 Created Date: Thursday, November 16 2023
 -----
 Description:
-    This code is specifically designed to segment a user-provided text into tweet-sized segments and add a counter, like [3/10], to the end of each segment.
-    The public interface is segment(user_post).
+    This code is specifically designed to segment a user-provided text into tweet-sized segments and add a counter,
+    like [3/10], to the end of each segment. The public interface for GPT is segmented_text(user_post).
 """
 
 import re
@@ -17,18 +17,24 @@ SEGMENT_LENGTH = TWEER_MAX_LENGTH
 SEGMENT_NUM_LENGTH = 8
 SEGMENT_VALID_LENGTH = SEGMENT_LENGTH - SEGMENT_NUM_LENGTH
 
-## Note: ROUGH_SENGMENT_THRESHOLD must be < (0.5 * SEGMENT_VALID_LENGTH) - MAX_WORD_SIZE
-ROUGH_SENGMENT_THRESHOLD = 120
+## Note: ROUGH_SEGMENT_THRESHOLD must be < (0.5 * SEGMENT_VALID_LENGTH) - MAX_WORD_SIZE
+ROUGH_SEGMENT_THRESHOLD = 120
+
+
+def segmented_text(user_post):
+    return '\n'.join(segment(user_post))
+
 
 def segment(user_post):
     return suffix_num(fine_segment(rough_segment(user_post)))
+
 
 def rough_segment(text):
 
     sentences = re.findall(r'[^.!?]*[.!?:]\s+', text.lstrip())
 
     potential_max_length = SEGMENT_VALID_LENGTH
-    threshold_for_new_partition = ROUGH_SENGMENT_THRESHOLD
+    threshold_for_new_partition = ROUGH_SEGMENT_THRESHOLD
 
     partitions = []
     current_partition = ""
@@ -57,8 +63,8 @@ def rough_segment(text):
 
     return partitions
 
-def fine_segment(partitions):
 
+def fine_segment(partitions):
     partitions = [p.rstrip() for p in partitions]
 
     segments = []
@@ -114,8 +120,8 @@ def split_text(text):
 
     return segments
 
-def suffix_num(segments):
 
+def suffix_num(segments):
     den = len(segments)
     for i in range(den):
         segments[i] = segments[i] + " [" + str(i + 1) + "/" + str(den) + "]"
