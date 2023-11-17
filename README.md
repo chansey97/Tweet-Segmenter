@@ -7,5 +7,3 @@ I segment text into tweet-sized parts with a counter to the end of each segment.
 ## URL
 
 https://chat.openai.com/g/g-tR9Zg3SfS-tweet-segmenter
-
-There might be bugs or unsatisfactory aspects, but I will fix them soon.
