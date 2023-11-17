@@ -26,12 +26,32 @@ def segmented_text(user_post):
 
 
 def segment(user_post):
-    return suffix_num(fine_segment(rough_segment(user_post)))
+    return suffix_num(fine_segment(rough_segment(extract_sentences(user_post))))
 
 
-def rough_segment(text):
+def extract_sentences(text):
 
-    sentences = re.findall(r'[^.!?:]*[.!?:]\s+', text.lstrip())
+    # 1. Replace "..." with a placeholder
+    placeholders = []
+    def replace_with_placeholder(match):
+        placeholders.append(match.group())
+        return "__QUOTE_" + str(len(placeholders)-1) + "__"
+
+    text_without_quotes = re.sub(r'"[^"]*"', replace_with_placeholder, text)
+
+    # 2. Extract sentences
+    sentences = re.findall(r'(?:[^\n]+?[.!?:]\s+)|(?:[^\n]+\n\s*)', text_without_quotes.lstrip())
+
+    # 3. Restore quotes
+    restored_sentences = []
+    for sentence in sentences:
+        for i, placeholder in enumerate(placeholders):
+            sentence = sentence.replace("__QUOTE_"+str(i)+"__", placeholder)
+        restored_sentences.append(sentence)
+
+    return restored_sentences
+
+def rough_segment(sentences):
 
     potential_max_length = SEGMENT_VALID_LENGTH
     threshold_for_new_partition = ROUGH_SEGMENT_THRESHOLD
@@ -127,3 +147,4 @@ def suffix_num(segments):
         segments[i] = segments[i] + " [" + str(i + 1) + "/" + str(den) + "]"
 
     return segments
+
