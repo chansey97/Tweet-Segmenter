@@ -22,3 +22,7 @@ I segment text into tweet-sized parts with a counter to the end of each segment.
 
 https://chat.openai.com/g/g-tR9Zg3SfS-tweet-segmenter
 
+## Screenshot
+
+https://github.com/chansey97/Tweet-Segmenter/assets/4015056/4ffa949a-7da1-409a-8a49-30949388e5ba
+
