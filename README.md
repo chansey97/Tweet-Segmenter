@@ -14,7 +14,7 @@ I segment text into tweet-sized parts with a counter to the end of each segment.
 
 - Maximized Content per Tweet: Maximizes the use of Twitter's character limit for each tweet.
 
-- Sequential Tweet Counter: Automatically adds a counter (e.g., [2/10]) at the end of each tweet.
+- Sequential Tweet Counter: Automatically adds a counter (e.g. [2/10]) at the end of each tweet.
 
 - Double Quotation Compatibility: Double-quoted texts are accurately maintained.
 
