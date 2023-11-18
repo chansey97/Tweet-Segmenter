@@ -6,13 +6,14 @@ I segment text into tweet-sized parts with a counter to the end of each segment.
 
 ## Key Features
 
-- Smart Text Segmentation: Automatically segments long texts into individual tweets, maintaining readability (e.g. No more 'short tail' problems).
+- Smart Text Segmentation: Automatically segments long texts into individual tweets, maintaining readability.
 - Preserved Formatting: Keeps the original text format, including line breaks and paragraphs.
 - Sentence Integrity: Ensure the sentence integrity of each tweet as much as possible.
 - Minimize The Number of Tweets: Compress the number of tweets as much as possible.
-- Maximized Content per Tweet: Maximizes the use of Twitter's character limit for each tweet as much as possible.
+- Maximize Content per Tweet: Maximizes the use of Twitter's character limit for each tweet as much as possible.
 - Sequential Tweet Counter: Automatically adds a counter (e.g. [2/10]) at the end of each tweet.
 - Double Quotation Compatibility: Double-quoted texts are accurately maintained.
+- No "Short Tail" tweets!
 
 ## URL
 
